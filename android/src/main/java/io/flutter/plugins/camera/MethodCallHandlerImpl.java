@@ -54,7 +54,6 @@ final class MethodCallHandlerImpl implements MethodChannel.MethodCallHandler {
         break;
       case "initialize":
         {
-
           //TODO: init with more config
           if (camera != null) {
             camera.close();
@@ -74,7 +73,6 @@ final class MethodCallHandlerImpl implements MethodChannel.MethodCallHandler {
                   result.error(errCode, errDesc, null);
                 }
               });
-
           break;
         }
       case "takePicture":
@@ -83,21 +81,32 @@ final class MethodCallHandlerImpl implements MethodChannel.MethodCallHandler {
           break;
         }
       case "setPointOfInterest":
-      {
-        //result.notImplemented();
+        {
+          //result.notImplemented();
 
-        try {
-          camera.focusToPoint(call.argument("offsetX"),call.argument("offsetY"));
-        } catch (CameraAccessException e) {
-          handleException(e, result);
+          try {
+            camera.focusToPoint(call.argument("offsetX"),call.argument("offsetY"));
+          } catch (CameraAccessException e) {
+            handleException(e, result);
+          }
+          break;
         }
-        break;
-      }
       case "zoom":
         {
           try {
             // Always convert the number to float since it can be int/double
             camera.zoom(call.argument("step"));
+            result.success(null);
+          } catch (CameraAccessException e) {
+            result.error("CameraAccess", e.getMessage(), null);
+          }
+          break;
+        }
+      case "exposure":
+        {
+          try {
+            // Always convert the number to float since it can be int/double
+            camera.exposure(call.argument("sensitivity"));
             result.success(null);
           } catch (CameraAccessException e) {
             result.error("CameraAccess", e.getMessage(), null);
@@ -161,22 +170,22 @@ final class MethodCallHandlerImpl implements MethodChannel.MethodCallHandler {
           }
           break;
         }
-      case "setFlashMode": {
-        try {
-          Log.d("TAG",call.argument("flashMode").toString());
-          camera.setFlash((int) call.argument("flashMode"));
-          result.success(null);
-        } catch (Exception e){
-          handleException(e, result);
+      case "setFlashMode": 
+        {
+          try {
+            Log.d("TAG",call.argument("flashMode").toString());
+            camera.setFlash((int) call.argument("flashMode"));
+            result.success(null);
+          } catch (Exception e){
+            handleException(e, result);
+          }
+          break;
         }
-        break;
-      }
       case "hasFlash":
-      {
-        result.success(hasFlash());
-        break;
-      }
-
+        {
+          result.success(hasFlash());
+          break;
+        }
       case "dispose":
         {
 
@@ -202,6 +211,9 @@ final class MethodCallHandlerImpl implements MethodChannel.MethodCallHandler {
             .getPackageManager()
             .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
   }
+
+
+  
   private void instantiateCamera(MethodCall call, Result result) throws CameraAccessException {
     String cameraName = call.argument("cameraName");
     String resolutionPreset = call.argument("resolutionPreset");

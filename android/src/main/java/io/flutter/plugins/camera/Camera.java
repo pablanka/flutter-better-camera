@@ -28,6 +28,7 @@ import android.media.MediaRecorder;
 import android.os.Build;
 import android.util.Log;
 import android.util.Range;
+import android.util.Rational;
 import android.util.Size;
 import android.view.OrientationEventListener;
 import android.view.Surface;
@@ -81,8 +82,7 @@ public class Camera {
   private final Size previewSize;
   private final boolean enableAudio;
   private final boolean mFlashSupported;
-  private final boolean mEnableAutoExposure
-          ;
+  private final boolean mEnableAutoExposure;
 
   private CameraDevice cameraDevice;
   private CameraCaptureSession mCaptureSession;
@@ -270,6 +270,12 @@ public class Camera {
             reply.put("textureId", flutterTexture.id());
             reply.put("previewWidth", previewSize.getWidth());
             reply.put("previewHeight", previewSize.getHeight());
+
+            Rational step = mCameraCharacteristics.get(CameraCharacteristics.CONTROL_AE_COMPENSATION_STEP);
+            Range<Integer> range = mCameraCharacteristics.get(CameraCharacteristics.CONTROL_AE_COMPENSATION_RANGE);
+            reply.put("exposureCompensationStep", step);
+            reply.put("exposureCompensationRage", range);
+
             result.success(reply);
           }
 
@@ -1062,11 +1068,21 @@ public class Camera {
   public void zoom(double step) throws CameraAccessException {
     changeZoom((float) step);
   }
-
+  
   private void changeZoom(float step) throws CameraAccessException {
     calculateZoom(step);
     setScalerCropRegion(mPreviewRequestBuilder, zoom);
     mCaptureSession.setRepeatingRequest(mPreviewRequestBuilder.build(), null, null);
+  }
+  
+  public void exposure(double sensitivity) throws CameraAccessException {
+    changeExposure((float) sensitivity);
+  }
+
+  private void changeExposure(float sensitivity) throws CameraAccessException {
+    
+
+
   }
 
   private void calculateZoom(float step) {
