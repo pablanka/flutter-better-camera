@@ -543,9 +543,7 @@ public class Camera {
 
       captureBuilder.set(CaptureRequest.CONTROL_AF_MODE,
               mPreviewRequestBuilder.get(CaptureRequest.CONTROL_AF_MODE));
-
-      captureBuilder.set(CaptureRequest.SCALER_CROP_REGION, zoom);
-
+      
       if(mFlashSupported) {
         switch (mFlash) {
           case Constants.FLASH_OFF:
@@ -572,6 +570,8 @@ public class Camera {
             break;
         }
       }
+
+      captureBuilder.set(CaptureRequest.SCALER_CROP_REGION, zoom);
 
       captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, getMediaOrientation());
 
