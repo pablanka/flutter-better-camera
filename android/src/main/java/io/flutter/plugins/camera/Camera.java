@@ -277,7 +277,7 @@ public class Camera {
             int[] intRage = new int[2];
             intRage[0] = range.getLower().intValue();
             intRage[1] = range.getUpper().intValue();
-            reply.put("exposureCompensationRage", intRage);*
+            reply.put("exposureCompensationRage", intRage);*/
 
             result.success(reply);
           }
