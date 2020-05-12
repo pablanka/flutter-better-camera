@@ -271,10 +271,13 @@ public class Camera {
             reply.put("previewWidth", previewSize.getWidth());
             reply.put("previewHeight", previewSize.getHeight());
 
-            Rational step = mCameraCharacteristics.get(CameraCharacteristics.CONTROL_AE_COMPENSATION_STEP);
+            /*Rational step = mCameraCharacteristics.get(CameraCharacteristics.CONTROL_AE_COMPENSATION_STEP);
             Range<Integer> range = mCameraCharacteristics.get(CameraCharacteristics.CONTROL_AE_COMPENSATION_RANGE);
-            reply.put("exposureCompensationStep", step);
-            reply.put("exposureCompensationRage", range);
+            reply.put("exposureCompensationStep", step.doubleValue());
+            int[] intRage = new int[2];
+            intRage[0] = range.getLower().intValue();
+            intRage[1] = range.getUpper().intValue();
+            reply.put("exposureCompensationRage", intRage);*
 
             result.success(reply);
           }
