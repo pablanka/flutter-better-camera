@@ -543,7 +543,7 @@ public class Camera {
 
       captureBuilder.set(CaptureRequest.CONTROL_AF_MODE,
               mPreviewRequestBuilder.get(CaptureRequest.CONTROL_AF_MODE));
-      
+
       if(mFlashSupported) {
         switch (mFlash) {
           case Constants.FLASH_OFF:
