@@ -813,7 +813,6 @@ public class Camera {
       updateAutoFocus();
       if (mCaptureSession != null) {
         try {
-          //mCaptureSession.setRepeatingRequest(mPreviewRequestBuilder.build(), mCaptureCallback, null);
           mCaptureSession.setRepeatingRequest(mPreviewRequestBuilder.build(), mCaptureCallback, null);
 
         } catch (CameraAccessException e) {
@@ -1075,7 +1074,7 @@ public class Camera {
   private void changeZoom(float step) throws CameraAccessException {
     calculateZoom(step);
     setScalerCropRegion(mPreviewRequestBuilder, zoom);
-    mCaptureSession.setRepeatingRequest(mPreviewRequestBuilder.build(), null, null);
+    mCaptureSession.setRepeatingRequest(mPreviewRequestBuilder.build(), mCaptureCallback, null);
   }
 
   private void calculateZoom(float step) {
@@ -1106,6 +1105,7 @@ public class Camera {
 
   private void changeExposure(float sensitivity) throws CameraAccessException {
     mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AE_EXPOSURE_COMPENSATION, (int) sensitivity);
+    mCaptureSession.setRepeatingRequest(mPreviewRequestBuilder.build(), mCaptureCallback, null);
   }
 
   private void setScalerCropRegion(CaptureRequest.Builder captureRequestBuilder, Rect zoom) {
