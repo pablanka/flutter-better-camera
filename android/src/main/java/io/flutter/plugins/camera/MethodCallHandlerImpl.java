@@ -102,11 +102,11 @@ final class MethodCallHandlerImpl implements MethodChannel.MethodCallHandler {
           }
           break;
         }
-      case "exposure":
+      case "setExposureCompensation":
         {
           try {
             // Always convert the number to float since it can be int/double
-            camera.exposure(call.argument("sensitivity"));
+            camera.exposure(call.argument("compensation"));
             result.success(null);
           } catch (CameraAccessException e) {
             result.error("CameraAccess", e.getMessage(), null);

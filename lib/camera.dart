@@ -318,7 +318,7 @@ class CameraController extends ValueNotifier<CameraValue> {
         },
       );
       _textureId = reply['textureId'];
-			
+
       _exposureCompensationStep = reply['exposureCompensationStep'];
       _exposureCompensationRage = reply['exposureCompensationRage'];
 
@@ -614,7 +614,7 @@ class CameraController extends ValueNotifier<CameraValue> {
     }
   }
 
-  // Set autoFocusEnabled on camera
+  /// Set autoFocusEnabled on camera
   Future<void> setAutoFocus(bool newValue) async {
     value = value.copyWith(autoFocusEnabled: newValue);
     try {
@@ -627,7 +627,7 @@ class CameraController extends ValueNotifier<CameraValue> {
     }
   }
 
-  // Set setFlashMode on camera
+  /// Set setFlashMode on camera
   Future<void> setFlashMode(FlashMode flashMode) async {
     value = value.copyWith(flashMode: flashMode);
     try {
@@ -640,9 +640,7 @@ class CameraController extends ValueNotifier<CameraValue> {
     }
   }
 
-  ///
   /// change zoom by specific [step].
-  ///
   Future<void> zoom(double step) async {
     await _channel.invokeMethod<void>('zoom', <String, dynamic>{'step': step});
   }
@@ -675,6 +673,17 @@ class CameraController extends ValueNotifier<CameraValue> {
 
     try {
       return await _channel.invokeMethod<bool>('hasFlash');
+    } on PlatformException catch (e) {
+      throw CameraException(e.code, e.message);
+    }
+  }
+
+  Future<void> setExposureCompensation(double compensation) async {
+    try {
+      await _channel.invokeMethod<void>(
+        'setExposureCompensation',
+        <String, dynamic>{'compensation': compensation},
+      );
     } on PlatformException catch (e) {
       throw CameraException(e.code, e.message);
     }

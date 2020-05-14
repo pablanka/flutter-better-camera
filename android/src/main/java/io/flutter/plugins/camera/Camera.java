@@ -1077,16 +1077,6 @@ public class Camera {
     setScalerCropRegion(mPreviewRequestBuilder, zoom);
     mCaptureSession.setRepeatingRequest(mPreviewRequestBuilder.build(), null, null);
   }
-  
-  public void exposure(double sensitivity) throws CameraAccessException {
-    changeExposure((float) sensitivity);
-  }
-
-  private void changeExposure(float sensitivity) throws CameraAccessException {
-    
-
-
-  }
 
   private void calculateZoom(float step) {
 
@@ -1108,6 +1098,14 @@ public class Camera {
             croppedHeight / 2,
             rect.width() - croppedWidth / 2,
             rect.height() - croppedHeight / 2);
+  }
+
+  public void exposure(double sensitivity) throws CameraAccessException {
+    changeExposure((float) sensitivity);
+  }
+
+  private void changeExposure(float sensitivity) throws CameraAccessException {
+    mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AE_EXPOSURE_COMPENSATION, (int) sensitivity);
   }
 
   private void setScalerCropRegion(CaptureRequest.Builder captureRequestBuilder, Rect zoom) {
