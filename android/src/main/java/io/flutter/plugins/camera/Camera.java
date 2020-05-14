@@ -1111,9 +1111,7 @@ public class Camera {
     mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AE_EXPOSURE_COMPENSATION, (int) sensitivity);
     mCaptureSession.setRepeatingRequest(mPreviewRequestBuilder.build(), mCaptureCallback, null);
   }
-
-
-
+  
   private int getMediaOrientation() {
     final int sensorOrientationOffset =
         (currentOrientation == ORIENTATION_UNKNOWN)
