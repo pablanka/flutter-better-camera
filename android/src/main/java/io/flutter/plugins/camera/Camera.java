@@ -1099,6 +1099,10 @@ public class Camera {
             rect.height() - croppedHeight / 2);
   }
 
+  private void setScalerCropRegion(CaptureRequest.Builder captureRequestBuilder, Rect zoom) {
+    captureRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, zoom);
+  }
+
   public void exposure(double sensitivity) throws CameraAccessException {
     changeExposure((float) sensitivity);
   }
@@ -1108,9 +1112,7 @@ public class Camera {
     mCaptureSession.setRepeatingRequest(mPreviewRequestBuilder.build(), mCaptureCallback, null);
   }
 
-  private void setScalerCropRegion(CaptureRequest.Builder captureRequestBuilder, Rect zoom) {
-    captureRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, zoom);
-  }
+
 
   private int getMediaOrientation() {
     final int sensorOrientationOffset =
