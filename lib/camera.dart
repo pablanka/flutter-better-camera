@@ -326,7 +326,7 @@ class CameraController extends ValueNotifier<CameraValue> {
       } else if (Platform.isIOS) {
 				double minExposureTargetBias = reply['minExposureTargetBias'];
 				double maxExposureTargetBias = reply['maxExposureTargetBias'];
-        _exposureCompensationStep = maxExposureTargetBias;
+        _exposureCompensationStep = 0.2;
         _exposureCompensationRage = [minExposureTargetBias.toInt(), maxExposureTargetBias.toInt()];
 			}
 

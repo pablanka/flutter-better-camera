@@ -788,16 +788,10 @@ FourCharCode const videoFormat = kCVPixelFormatType_32BGRA;
         return;
     }
 
-    /* float maxZoom = _captureDevice.activeFormat.videoMaxZoomFactor;
-
-    if(zoom > maxZoom){
-        _captureDevice.videoZoomFactor = maxZoom;
-    } else {
-        _captureDevice.videoZoomFactor = (float) zoom;
-    }
+    [_captureDevice setExposureTargetBias:(float) sensitivity];
 
 
-    [_captureDevice unlockForConfiguration]; */
+    [_captureDevice unlockForConfiguration];
 }
 
 - (BOOL)setupWriterForPath:(NSString *)path {
