@@ -788,7 +788,7 @@ FourCharCode const videoFormat = kCVPixelFormatType_32BGRA;
         return;
     }
 
-    float maxZoom = _captureDevice.activeFormat.videoMaxZoomFactor;
+    /* float maxZoom = _captureDevice.activeFormat.videoMaxZoomFactor;
 
     if(zoom > maxZoom){
         _captureDevice.videoZoomFactor = maxZoom;
@@ -797,7 +797,7 @@ FourCharCode const videoFormat = kCVPixelFormatType_32BGRA;
     }
 
 
-    [_captureDevice unlockForConfiguration];
+    [_captureDevice unlockForConfiguration]; */
 }
 
 - (BOOL)setupWriterForPath:(NSString *)path {
@@ -996,7 +996,7 @@ FourCharCode const videoFormat = kCVPixelFormatType_32BGRA;
       cam.eventChannel = eventChannel;
       
       NSArray *range = [[NSArray alloc] initWithObjects:
-      [NSNumber numberWithFloat:cam.minExposureTargetBias],
+      [NSNumber numberWithFloat:],
       [NSNumber numberWithFloat:cam.maxExposureTargetBias],
       nil];
 
@@ -1006,8 +1006,8 @@ FourCharCode const videoFormat = kCVPixelFormatType_32BGRA;
         @"previewHeight" : @(cam.previewSize.height),
         @"captureWidth" : @(cam.captureSize.width),
         @"captureHeight" : @(cam.captureSize.height),
-        @"exposureCompensationRage" : @(range),
-        @"exposureCompensationStep" : @(maxExposureTargetBias),
+        @"exposureCompensationRage" : @[@cam.maxExposureTargetBias, @cam.maxExposureTargetBias],
+        @"exposureCompensationStep" : @(cam.maxExposureTargetBias),
       });
       [cam start];
     }
