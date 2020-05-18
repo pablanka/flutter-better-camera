@@ -1001,8 +1001,8 @@ FourCharCode const videoFormat = kCVPixelFormatType_32BGRA;
         @"previewHeight" : @(cam.previewSize.height),
         @"captureWidth" : @(cam.captureSize.width),
         @"captureHeight" : @(cam.captureSize.height),
-        @"minExposureTargetBias" : @(cam.minExposureTargetBias),
-        @"maxExposureTargetBias" : @(cam.maxExposureTargetBias),
+        @"minExposureTargetBias" : @((int) cam.minExposureTargetBias),
+        @"maxExposureTargetBias" : @((int) cam.maxExposureTargetBias),
       });
       [cam start];
     }
