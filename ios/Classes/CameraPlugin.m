@@ -195,6 +195,8 @@ static ResolutionPreset getResolutionPresetForString(NSString *preset) {
 @property(assign, nonatomic) CMTime audioTimeOffset;
 @property(nonatomic) CMMotionManager *motionManager;
 @property AVAssetWriterInputPixelBufferAdaptor *videoAdaptor;
+@property(readonly, nonatomic) float minExposureTargetBias;
+@property(readonly, nonatomic) float maxExposureTargetBias;
 - (instancetype)initWithCameraName:(NSString *)cameraName
                   resolutionPreset:(NSString *)resolutionPreset
                        enableAudio:(BOOL)enableAudio
@@ -281,6 +283,10 @@ FourCharCode const videoFormat = kCVPixelFormatType_32BGRA;
     }
 
   [self setCaptureSessionPreset:_resolutionPreset];
+
+  _minExposureTargetBias = _captureDevice.minExposureTargetBias;
+  _maxExposureTargetBias = _captureDevice.maxExposureTargetBias;
+
   return self;
 }
 
@@ -770,6 +776,29 @@ FourCharCode const videoFormat = kCVPixelFormatType_32BGRA;
     [_captureDevice unlockForConfiguration];
 }
 
+- (void)exposure:(double)sensitivity {
+
+    NSError *error = nil;
+
+    if(_captureDevice == nil){
+        return;
+    }
+
+    if (![_captureDevice lockForConfiguration:&error]) {
+        return;
+    }
+
+    float maxZoom = _captureDevice.activeFormat.videoMaxZoomFactor;
+
+    if(zoom > maxZoom){
+        _captureDevice.videoZoomFactor = maxZoom;
+    } else {
+        _captureDevice.videoZoomFactor = (float) zoom;
+    }
+
+
+    [_captureDevice unlockForConfiguration];
+}
 
 - (BOOL)setupWriterForPath:(NSString *)path {
   NSError *error = nil;
@@ -965,12 +994,20 @@ FourCharCode const videoFormat = kCVPixelFormatType_32BGRA;
                binaryMessenger:_messenger];
       [eventChannel setStreamHandler:cam];
       cam.eventChannel = eventChannel;
+      
+      NSArray *range = [[NSArray alloc] initWithObjects:
+      [NSNumber numberWithFloat:cam.minExposureTargetBias],
+      [NSNumber numberWithFloat:cam.maxExposureTargetBias],
+      nil];
+
       result(@{
         @"textureId" : @(textureId),
         @"previewWidth" : @(cam.previewSize.width),
         @"previewHeight" : @(cam.previewSize.height),
         @"captureWidth" : @(cam.captureSize.width),
         @"captureHeight" : @(cam.captureSize.height),
+        @"exposureCompensationRage" : @(range),
+        @"exposureCompensationStep" : @(maxExposureTargetBias),
       });
       [cam start];
     }
@@ -1001,9 +1038,11 @@ FourCharCode const videoFormat = kCVPixelFormatType_32BGRA;
       NSNumber *step = call.arguments[@"step"];
       [_camera zoom:[step doubleValue]];
       result(nil);
-
-  }
-    else {
+  } else if ([@"setExposureCompensation" isEqualToString:call.method]){
+      NSNumber *step = call.arguments[@"compensation"];
+      [_camera exposure:[sensitivity doubleValue]];
+      result(nil);
+  } else {
     NSDictionary *argsMap = call.arguments;
     NSUInteger textureId = ((NSNumber *)argsMap[@"textureId"]).unsignedIntegerValue;
 
