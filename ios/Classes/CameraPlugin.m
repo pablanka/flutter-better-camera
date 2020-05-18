@@ -995,13 +995,18 @@ FourCharCode const videoFormat = kCVPixelFormatType_32BGRA;
       [eventChannel setStreamHandler:cam];
       cam.eventChannel = eventChannel;
 
+      NSArray *range = [[NSArray alloc] initWithObjects:
+      [NSNumber numberWithFloat:cam.minExposureTargetBias],
+      [NSNumber numberWithFloat:cam.maxExposureTargetBias],
+      nil];
+
       result(@{
         @"textureId" : @(textureId),
         @"previewWidth" : @(cam.previewSize.width),
         @"previewHeight" : @(cam.previewSize.height),
         @"captureWidth" : @(cam.captureSize.width),
         @"captureHeight" : @(cam.captureSize.height),
-        @"exposureCompensationRage" : @({cam.maxExposureTargetBias, cam.maxExposureTargetBias}),
+        @"exposureCompensationRage" : @[cam.maxExposureTargetBias, cam.maxExposureTargetBias],
         @"exposureCompensationStep" : @(cam.maxExposureTargetBias),
       });
       [cam start];
