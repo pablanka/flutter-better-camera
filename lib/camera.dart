@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
@@ -319,8 +320,13 @@ class CameraController extends ValueNotifier<CameraValue> {
       );
       _textureId = reply['textureId'];
 
-      _exposureCompensationStep = reply['exposureCompensationStep'];
-      _exposureCompensationRage = reply['exposureCompensationRage'];
+      if (Platform.isAndroid) {
+        _exposureCompensationStep = reply['exposureCompensationStep'];
+        _exposureCompensationRage = reply['exposureCompensationRage'];
+      } else if (Platform.isIOS) {
+        _exposureCompensationStep = reply['maxExposureTargetBias'];
+        _exposureCompensationRage = [reply['minExposureTargetBias'], reply['maxExposureTargetBias']];
+			}
 
       value = value.copyWith(
         isInitialized: true,
