@@ -995,17 +995,14 @@ FourCharCode const videoFormat = kCVPixelFormatType_32BGRA;
       [eventChannel setStreamHandler:cam];
       cam.eventChannel = eventChannel;
 
-      int minExposureTargetBias = (int) cam.minExposureTargetBias;
-      int maxExposureTargetBias = (int) cam.maxExposureTargetBias;
-
       result(@{
         @"textureId" : @(textureId),
         @"previewWidth" : @(cam.previewSize.width),
         @"previewHeight" : @(cam.previewSize.height),
         @"captureWidth" : @(cam.captureSize.width),
         @"captureHeight" : @(cam.captureSize.height),
-        @"minExposureTargetBias" : @(minExposureTargetBias),
-        @"maxExposureTargetBias" : @(maxExposureTargetBias),
+        @"minExposureTargetBias" : @(cam.minExposureTargetBias),
+        @"maxExposureTargetBias" : @(cam.maxExposureTargetBias),
       });
       [cam start];
     }
