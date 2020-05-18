@@ -994,11 +994,6 @@ FourCharCode const videoFormat = kCVPixelFormatType_32BGRA;
                binaryMessenger:_messenger];
       [eventChannel setStreamHandler:cam];
       cam.eventChannel = eventChannel;
-      
-      NSArray *range = [[NSArray alloc] initWithObjects:
-      [NSNumber numberWithFloat:],
-      [NSNumber numberWithFloat:cam.maxExposureTargetBias],
-      nil];
 
       result(@{
         @"textureId" : @(textureId),
@@ -1006,7 +1001,7 @@ FourCharCode const videoFormat = kCVPixelFormatType_32BGRA;
         @"previewHeight" : @(cam.previewSize.height),
         @"captureWidth" : @(cam.captureSize.width),
         @"captureHeight" : @(cam.captureSize.height),
-        @"exposureCompensationRage" : @[@cam.maxExposureTargetBias, @cam.maxExposureTargetBias],
+        @"exposureCompensationRage" : @[cam.maxExposureTargetBias, cam.maxExposureTargetBias],
         @"exposureCompensationStep" : @(cam.maxExposureTargetBias),
       });
       [cam start];
@@ -1039,7 +1034,7 @@ FourCharCode const videoFormat = kCVPixelFormatType_32BGRA;
       [_camera zoom:[step doubleValue]];
       result(nil);
   } else if ([@"setExposureCompensation" isEqualToString:call.method]){
-      NSNumber *step = call.arguments[@"compensation"];
+      NSNumber *sensitivity = call.arguments[@"compensation"];
       [_camera exposure:[sensitivity doubleValue]];
       result(nil);
   } else {
