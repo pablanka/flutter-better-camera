@@ -788,7 +788,7 @@ FourCharCode const videoFormat = kCVPixelFormatType_32BGRA;
         return;
     }
 
-    [_captureDevice setExposureTargetBias:(float) sensitivity];
+    [_captureDevice setExposureTargetBias:(float) sensitivity completionHandler:^(CMTime syncTime) {}];
 
 
     [_captureDevice unlockForConfiguration];
