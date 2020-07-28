@@ -324,11 +324,14 @@ class CameraController extends ValueNotifier<CameraValue> {
         _exposureCompensationStep = reply['exposureCompensationStep'];
         _exposureCompensationRage = reply['exposureCompensationRage'];
       } else if (Platform.isIOS) {
-				double minExposureTargetBias = reply['minExposureTargetBias'];
-				double maxExposureTargetBias = reply['maxExposureTargetBias'];
+        double minExposureTargetBias = reply['minExposureTargetBias'];
+        double maxExposureTargetBias = reply['maxExposureTargetBias'];
         _exposureCompensationStep = 0.2;
-        _exposureCompensationRage = [minExposureTargetBias.toInt(), maxExposureTargetBias.toInt()];
-			}
+        _exposureCompensationRage = [
+          minExposureTargetBias.toInt(),
+          maxExposureTargetBias.toInt()
+        ];
+      }
 
       value = value.copyWith(
         isInitialized: true,
@@ -415,6 +418,9 @@ class CameraController extends ValueNotifier<CameraValue> {
     } on PlatformException catch (e) {
       value = value.copyWith(isTakingPicture: false);
       throw CameraException(e.code, e.message);
+    } catch (error) {
+      value = value.copyWith(isTakingPicture: false);
+      rethrow;
     }
   }
 

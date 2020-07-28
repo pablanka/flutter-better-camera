@@ -514,6 +514,7 @@ public class Camera {
       captureStillPicture(filePath,result);
     }
   }
+  
   public void captureStillPicture(String filePath, @NonNull final Result result) {
     final File file = new File(filePath);
 
