@@ -6,7 +6,7 @@
 A Flutter plugin for iOS and Android allowing access to the device cameras.
 
 ## Dart package
-https://pub.flutter-io.cn/packages/flutter_better_camera
+https://pub.flutter-io.cn/packages/camera
 
 ## Features:
 
